@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
 import pygame
@@ -35,7 +35,7 @@ voisin = []
 
 ############################################################
 #                                                          #
-#            Programme Pour le Quadrillage                 #
+#            Programme Pour le Quadrillage                 #
 #                                                          #
 ############################################################
 
@@ -66,10 +66,62 @@ def dessine_quadrillage(couleur):
     dessine_line_V(couleur)
 
 
+    
+############################################################
+#                                                          #
+#                  Programme Principal                     #
+#                                                          #
+############################################################
+
+#Initialisation du module d'affichage pygame
+pygame.display.init()
+
+#
+screen = pygame.display.set_mode(SIZE)
+pygame.display.flip()
+
+dessine_quadrillage(COULEUR_0)
+# Variables globales
+jeu = []
+voisin = []
 
 ############################################################
 #                                                          #
-#                  Programme Principal                     #
+#            Programme Pour le Quadrillage                 #
+#                                                          #
+############################################################
+
+"""Fonction Lignes Horizontal"""
+
+def dessine_line_H(couleur):
+    debut = [0,0]
+    fin = [WIDTH, 0]
+    while debut[1]<HEIGHT:
+        debut[1] += CASE
+        fin[1] = debut[1]
+        pygame.draw.line(screen, couleur, debut, fin, 1)
+    pygame.display.flip()
+    
+"""Fonction Lignes Verticale"""  
+  
+def dessine_line_V(couleur):
+    debut = [0,0]
+    fin = [0, HEIGHT]
+    while debut[0]<WIDTH:
+        debut[0] += CASE
+        fin[0] = debut[0]
+        pygame.draw.line(screen, couleur, debut, fin, 1)
+    pygame.display.flip()
+
+def dessine_quadrillage(couleur):
+    dessine_line_H(couleur)
+    dessine_line_V(couleur)
+
+
+    
+############################################################
+#                                                          #
+#                  Programme Principal                     #
 #                                                          #
 ############################################################
 
