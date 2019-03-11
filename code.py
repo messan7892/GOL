@@ -32,3 +32,23 @@ COULEUR_VIDE = noir
 # Variables globales
 jeu = []
 voisin = []
+
+
+
+
+
+
+
+############################################################
+#                                                          #
+#                  Programme Principal                     #
+#                                                          #
+############################################################
+
+#Initialisation du module d'affichage pygame
+pygame.display.init()
+
+#
+screen = pygame.display.set_mode(SIZE)
+pygame.display.flip()
+
