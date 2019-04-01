@@ -1,4 +1,4 @@
-   # -*- coding: utf-8 -*-
+  # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
 import pygame
@@ -12,8 +12,8 @@ from graphics import *
 
 # definition de quelques constantes
 CASE = 20
-L = 32
-H = 24
+L = 22
+H = 16
 WIDTH = L*CASE 
 HEIGHT = H*CASE
 SIZE = [WIDTH, HEIGHT]
@@ -88,7 +88,20 @@ def init_jeu():
             jeu[i].append(MORTE)
             j +=1
         i +=1   
-    
+
+def affiche_jeu_console():
+    print("jeu :")    
+    # parcours des lignes du tableau jeu
+    i = 0
+    while i<H:
+        # parcours des colonnes du tableau jeu
+        j = 0
+        while j<L:
+            print('{:>2}'.format(jeu[i][j]), end=" ")
+            j +=1
+        print("\n")
+        i +=1
+
 def init_voisin():
     i = 0
     while i<H:
@@ -99,7 +112,20 @@ def init_voisin():
             # ajout d'une colonne j contenant un 0 dans la ligne i
             voisin[i].append(MORTE)
             j +=1
-        i +=1  
+        i +=1
+        
+def affiche_voisin_console():
+    print("voisin = ")    
+    # parcours des lignes du tableau jeu
+    i = 0
+    while i<H:
+        # parcours des colonnes du tableau jeu
+        j = 0
+        while j<L:
+            print('{:>2}'.format(voisin[i][j]), end=" ")
+            j +=1
+        print("\n")
+        i +=1
 ############################################################
 #                                                          #
 #         Calcul de la generation                          #
@@ -132,8 +158,7 @@ def est_vide(clic):
 
 def affiche_bouton_texte(texte, rect, couleur):
     # dessin du fond coloré du bouton
-    pygame.draw.rect(screen, couleur,op", [WIDTH//1.5, HEIGHT, WIDTH//3, -3*CASE], orange)
-    pygame.display.flip() rect, 0)    
+    pygame.draw.rect(screen, couleur, rect, 0)   
     # Initialisation de la fonte
     pygame.font.init()
     font = pygame.font.SysFont("verdana", 12, bold=False, italic=False)
@@ -178,7 +203,9 @@ affiche_menu_case()
 
 #initialisation des case dans des tableaux
 init_jeu()
+affiche_jeu_console()
 init_voisin()
+affiche_voisin_console()
 
 #Boucle principale
 quitter = 0
@@ -191,11 +218,15 @@ while quitter == 0:
   #Si la case cliqué est vide
   if est_vide(clic) == MORTE:
     print(MORTE)
+    j = clic[0]//CASE
+    i = clic[1]//CASE
+    jeu[i][j] = VIVANTE
 	#Si la case cliqué est rempli/vivante
   else:
     print(VIVANTE)
   time.sleep(TEMPS)
+  affiche_jeu_console()
+
   
 wait_escape()
 pygame.quit()
-
