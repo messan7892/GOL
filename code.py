@@ -1,4 +1,4 @@
-  # -*- coding: utf-8 -*-
+   # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
 import pygame
@@ -11,9 +11,9 @@ from couleur import *
 from graphics import *
 
 # definition de quelques constantes
-CASE = 10
-L = 64
-H = 28
+CASE = 20
+L = 32
+H = 24
 WIDTH = L*CASE 
 HEIGHT = H*CASE
 SIZE = [WIDTH, HEIGHT]
@@ -124,6 +124,40 @@ def est_vide(clic):
     
     
     
+############################################################
+#                                                          #
+#               Programme pour le Menu                     #
+#                                                          #
+############################################################
+
+def affiche_bouton_texte(texte, rect, couleur):
+    # dessin du fond coloré du bouton
+    pygame.draw.rect(screen, couleur,op", [WIDTH//1.5, HEIGHT, WIDTH//3, -3*CASE], orange)
+    pygame.display.flip() rect, 0)    
+    # Initialisation de la fonte
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana", 12, bold=False, italic=False)
+    # Coordonnées du centre    
+    centre = [rect[0]+rect[2]//2, rect[1]+rect[3]//2]
+    # création de la surface contenant le texte
+    text_area = font.render(texte, 1, noir)
+    # taille de la surface contenant le texte
+    text_size = font.size(texte)
+    # position d'ancrage du coin en haut à gauche de la surface contenant 
+    # le texte
+    text_pos = [centre[0]-text_size[0]/2, centre[1]-text_size[1]/2]
+    # ancrage de la surface contenant le texte dans la fenêtre
+    screen.blit(text_area, text_pos)
+    pygame.display.flip()  
+    # desinitialisation de la fonte
+    pygame.font.quit()
+
+
+def affiche_menu_case():
+    global WIDTH, HEIGHT, CASE
+    affiche_bouton_texte("Lecture", [0, HEIGHT, WIDTH//3, -3*CASE], blanc)
+    affiche_bouton_texte("Pause", [WIDTH//3, HEIGHT, WIDTH//3, -3*CASE], violet)
+    affiche_bouton_texte("Stop", [WIDTH//1.5, HEIGHT, WIDTH//3, -3*CASE], orange)
     
 ############################################################
 #                                                          #
@@ -140,6 +174,7 @@ pygame.display.flip()
 
 #Dessin du Quadrillage
 dessine_quadrillage(COULEUR_0)
+affiche_menu_case()
 
 #initialisation des case dans des tableaux
 init_jeu()
@@ -163,3 +198,4 @@ while quitter == 0:
   
 wait_escape()
 pygame.quit()
+
