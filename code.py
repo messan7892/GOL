@@ -143,10 +143,11 @@ def affiche_voisin_console():
 ############################################################    
 
 def est_vide(clic):
-    vide = MORTE
     case_clic =[clic[0]//CASE,clic[1]//CASE]
     if jeu[case_clic[1]][case_clic[0]] == 0 :
-        return vide
+        return MORTE
+    else:
+        return VIVANTE
     
     
     
@@ -184,6 +185,25 @@ def affiche_menu_case():
     affiche_bouton_texte("Pause", [WIDTH//3, HEIGHT, WIDTH//3, 3*CASE], violet)
     affiche_bouton_texte("Stop", [WIDTH//1.5, HEIGHT, WIDTH//3, 3*CASE], orange)
     
+    
+    
+############################################################
+#                                                          #
+#          Programme pour remplir les cellules             #
+#                                                          #
+############################################################
+
+
+def remplir_case(clic):
+    if jeu[i][j] == 1:
+        centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
+        pygame.draw.circle(screen, COULEUR_3, centre, CASE//2-1)
+        pygame.display.flip()
+    else:
+        centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
+        pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
+        pygame.display.flip()
+ 
 ############################################################
 #                                                          #
 #                  Programme Principal                     #
@@ -219,16 +239,16 @@ while quitter == 0:
       #Si la case cliqué est vide
       if clic[1] < HEIGHT :
         if est_vide(clic) == MORTE:
-          print(MORTE)
           j = clic[0]//CASE
           i = clic[1]//CASE
           jeu[i][j] = VIVANTE
+          remplir_case(clic)
         #Si la case cliqué est rempli/vivante
         elif est_vide(clic) == VIVANTE :
-          print(VIVANTE)
           j = clic[0]//CASE
           i = clic[1]//CASE
           jeu[i][j] = MORTE
+          remplir_case(clic)
       elif clic[1] > HEIGHT :
         if clic[0] < (WIDTH//3):
           lecture = 1
