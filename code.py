@@ -132,7 +132,7 @@ def affiche_voisin_console():
 #                                                          #
 ############################################################    
 
-def calcul_voisin():
+#def calcul_voisin():
     
 #def calcul_jeu():
 
@@ -212,22 +212,30 @@ quitter = 0
 lecture = 0
 while quitter == 0:
   if lecture == 0:
-    while lecture ==0:
+    while lecture == 0:
       '''attente d un clic'''
       clic = wait_clic()
       '''Verification de la case'''
       #Si la case cliqué est vide
-      if est_vide(clic) == MORTE:
-        print(MORTE)
-        j = clic[0]//CASE
-        i = clic[1]//CASE
-        jeu[i][j] = VIVANTE
+      if clic[1] < HEIGHT :
+        if est_vide(clic) == MORTE:
+          print(MORTE)
+          j = clic[0]//CASE
+          i = clic[1]//CASE
+          jeu[i][j] = VIVANTE
         #Si la case cliqué est rempli/vivante
-      elif est_vide(clic) == VIVANTE:
-        print(VIVANTE)
-        j = clic[0]//CASE
-        i = clic[1]//CASE
-        jeu[i][j] = MORTE 
+        elif est_vide(clic) == VIVANTE :
+          print(VIVANTE)
+          j = clic[0]//CASE
+          i = clic[1]//CASE
+          jeu[i][j] = MORTE
+      elif clic[1] > HEIGHT :
+        if clic[0] < (WIDTH//3):
+          lecture = 1
+        elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
+          lecture = 0
+        elif clic[0] > (WIDTH//1.5):
+          pygame.quit()
       time.sleep(TEMPS)
       affiche_jeu_console()
 
