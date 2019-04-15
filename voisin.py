@@ -29,26 +29,20 @@ def calcul_voisin():
             elif i == 0 and j== L-1 :
                 voisin_case = jeu[0][L-2] + jeu[1][L-2] + jeu[1][L-1]
     
-            if  jeu[j] != 0
-    
-                if jeu[i][j-1]==1
-                    voisin-case +=1
-    
-            if jeu[j] != L-1
-     
-                if jeu[i][j+1]==1
-                    voisin-case +=1
-    
-            if jeu[i] != H-1 or jeu[j] != 0
-     
-                if jeu[i+1][j-1]==1
-                    voisin-case +=1
-            if jeu[i] != H-1
-                if jeu[i+1][j]==1
-                    voisin-case +=1 
-            if jeu[i] != H-1 or jeu[j] != L-1
-                if jeu[i+1][j+1]==1
-                    voisin-case +=1 
-            voisin[i][j]=voisin_case
+
+            #coin bas gauche
+            elif i == H-1 and j== 0 :
+                voisin_case = jeu[H-2][0] + jeu[H-2][1] + jeu[H-1][1]
+
+ 
+            #coin bas droit
+            elif i == H-1 and j == L-1 :
+                voisin_case = jeu[H-2][L-2] + jeu[H-2][L-1] + jeu[H-1][L-2]
+
+            #reste des cases
+            else :
+                voisin_case = jeu[i-1][j-1]+jeu[i-1][j]+jeu[i-1][j+1]+jeu[i][j-1]+jeu[i][j+1]+jeu[i+1][j-1]+jeu[i+1][j]+jeu[i+1][j+1]
+                            voisin[i][j]=voisin_case
             j +=1
         i+=1
+            
