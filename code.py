@@ -314,45 +314,45 @@ affiche_voisin_console()
 #Boucle principale
 quitter = 10
 lecture = 0
-while quitter != 0:
-  if lecture == 0:
-    while lecture == 0:
-      '''attente d un clic'''
-      clic = wait_clic()
-      '''Verification de la case'''
-      #Si la case cliqué est vide
-      if clic[1] < HEIGHT :
-        if est_vide(clic) == MORTE:
-          j = clic[0]//CASE
-          i = clic[1]//CASE
-          jeu[i][j] = VIVANTE
-          remplir_case_clic(clic)
-        #Si la case cliqué est rempli/vivante
-        elif est_vide(clic) == VIVANTE :
-          j = clic[0]//CASE
-          i = clic[1]//CASE
-          jeu[i][j] = MORTE
-          remplir_case_clic(clic)
-      # Si le clic intervient en dehors du jeu, soit sur le menu
-      elif clic[1] > HEIGHT :
-        # Si le clic est pour lancé le programme
-        if clic[0] < (WIDTH//3):
-          lecture = 1
-        # Si le clic est pour mettre en pause le programme
-        elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
-          lecture = 0
-        # Si le clic est pour arréter le programme 
-        elif clic[0] > (WIDTH//1.5):
-          pygame.quit()
-      affiche_jeu_console()
-      calcul_voisin()
-      affiche_voisin_console()
+   while quitter != 0:
+      if lecture == 0:
+       while lecture == 0:
+          '''attente d un clic'''
+          clic = wait_clic()
+         '''Verification de la case'''
+         #Si la case cliqué est vide
+         if clic[1] < HEIGHT :
+            if est_vide(clic) == MORTE:
+               j = clic[0]//CASE
+               i = clic[1]//CASE
+               jeu[i][j] = VIVANTE
+               remplir_case_clic(clic)
+            #Si la case cliqué est rempli/vivante
+            elif est_vide(clic) == VIVANTE :
+               j = clic[0]//CASE
+               i = clic[1]//CASE
+               jeu[i][j] = MORTE
+               remplir_case_clic(clic)
+            # Si le clic intervient en dehors du jeu, soit sur le menu
+            elif clic[1] > HEIGHT :
+            # Si le clic est pour lancé le programme
+            if clic[0] < (WIDTH//3):
+               lecture = 1
+            # Si le clic est pour mettre en pause le programme
+            elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
+               lecture = 0
+            # Si le clic est pour arréter le programme 
+            elif clic[0] > (WIDTH//1.5):
+               pygame.quit()
+            affiche_jeu_console()
+            calcul_voisin()
+            affiche_voisin_console()
       
-time.sleep(TEMPS)
-calcul_voisin()
-calcul_jeu()
-remplir_case()
-quitter -= 1
+   time.sleep(TEMPS)
+   calcul_voisin()
+   calcul_jeu()
+   remplir_case()
+   quitter -= 1
   
 wait_escape()
 pygame.quit()
