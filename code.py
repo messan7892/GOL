@@ -1,4 +1,4 @@
-  # -*- coding: utf-8 -*-
+   # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
 import pygame
@@ -132,9 +132,70 @@ def affiche_voisin_console():
 #                                                          #
 ############################################################    
 
-#def calcul_voisin():
+def calcul_voisin():
+    # parcours des lignes    
+    i = 0    
+    while i<H :
+        # parcours des colonnes
+        j = 0
+        while j<L :
+            voisin_case = 0
+            
+                    
+            #coin haut gauche
+            if i == 0 and j==0 :
+                voisin_case = jeu[1][0] + jeu[0][1] + jeu[1][1]
     
-#def calcul_jeu():
+            #coin haut droit
+            elif i == 0 and j== L-1 :
+                voisin_case = jeu[0][L-2] + jeu[1][L-2] + jeu[1][L-1]
+    
+
+            #coin bas gauche
+            elif i == H-1 and j== 0 :
+                voisin_case = jeu[H-2][0] + jeu[H-2][1] + jeu[H-1][1]
+
+ 
+            #coin bas droit
+            elif i == H-1 and j == L-1 :
+                voisin_case = jeu[H-2][L-2] + jeu[H-2][L-1] + jeu[H-1][L-2]
+            
+            # bord haut
+            elif i==0:
+                voisin_case = jeu[0][j-1] + jeu[0][j+1] + jeu[1][j-1] + jeu[1][j] + jeu[1][j+1]
+            # bord bas
+            elif i == H-1:
+                voisin_case = jeu[H-2][j-1] + jeu[H-2][j] + jeu[H-2][j] + jeu[H-1][j-1] + jeu[H-1][j+1]
+
+            #bord gauche
+            elif j == 0:
+                voisin_case = jeu[i-1][0] + jeu[i-1][1] + jeu[i][1] + jeu[i+1][0] + jeu[i+1][1]
+
+            #bord droit
+            elif j == L-1:
+                voisin_case = jeu[i-1][L-2] + jeu[i-1][L-1] + jeu[i][L-2] + jeu[i+1][L-2] + jeu[i+1][L-1]
+
+            #reste des cases
+            else :
+                voisin_case = jeu[i-1][j-1]+jeu[i-1][j]+jeu[i-1][j+1]+jeu[i][j-1]+jeu[i][j+1]+jeu[i+1][j-1]+jeu[i+1][j]+jeu[i+1][j+1]
+            voisin[i][j]=voisin_case
+            j+=1
+        i+=1
+
+def calcul_jeu():
+    i = 0
+    # parcours des lignes
+    while i<H :
+        # parcours des colonnes
+        j = 0
+        while j<L :
+          # Attribution des variables 1 ou 0 en fonction des lois du jeu
+            if voisin[i][j] <= 1 or voisin[i][j] >= 4:
+                jeu[i][j] = 0
+            elif voisin[i][j] == 3:
+                jeu[i][j] = 1
+            j += 1
+        i += 1
 
 ############################################################
 #                                                          #
@@ -143,6 +204,7 @@ def affiche_voisin_console():
 ############################################################    
 
 def est_vide(clic):
+  # Vérification de l'état de la cellule clické
     case_clic =[clic[0]//CASE,clic[1]//CASE]
     if jeu[case_clic[1]][case_clic[0]] == 0 :
         return MORTE
@@ -194,16 +256,38 @@ def affiche_menu_case():
 ############################################################
 
 
-def remplir_case(clic):
+def remplir_case_clic(clic):
+  # Dessiné un cercle de couleur si une case vide est cliqué au début
     if jeu[i][j] == 1:
         centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
-        pygame.draw.circle(screen, COULEUR_3, centre, CASE//2-1)
+        pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
         pygame.display.flip()
+  # Déssiné un rond noir par dessus le rond de couleur pour remettre une cellule à l'état initial en cliquant
     else:
         centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
         pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
         pygame.display.flip()
- 
+        
+def remplir_case():
+    #parcours des lignes
+    i = 0    
+    while i<H :
+        # parcours des colonnes
+        j = 0
+        while j<L :
+          # Mettre à jour les cases avec des ronds de couleurs pour les cellules vivantes
+            if jeu[i][j] == VIVANTE:
+                centre = [((j*CASE)-(CASE//2)),((i*CASE)-(CASE//2))]
+                pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
+                pygame.display.flip()
+          # Et inversement
+            else:
+                centre = [((j*CASE)-(CASE//2)),((i*CASE)-(CASE//2))]
+                pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
+                pygame.display.flip()
+            j += 1
+        i += 1    
+        
 ############################################################
 #                                                          #
 #                  Programme Principal                     #
@@ -228,9 +312,9 @@ init_voisin()
 affiche_voisin_console()
 
 #Boucle principale
-quitter = 0
+quitter = 10
 lecture = 0
-while quitter == 0:
+while quitter != 0:
   if lecture == 0:
     while lecture == 0:
       '''attente d un clic'''
@@ -242,23 +326,33 @@ while quitter == 0:
           j = clic[0]//CASE
           i = clic[1]//CASE
           jeu[i][j] = VIVANTE
-          remplir_case(clic)
+          remplir_case_clic(clic)
         #Si la case cliqué est rempli/vivante
         elif est_vide(clic) == VIVANTE :
           j = clic[0]//CASE
           i = clic[1]//CASE
           jeu[i][j] = MORTE
-          remplir_case(clic)
+          remplir_case_clic(clic)
+      # Si le clic intervient en dehors du jeu, soit sur le menu
       elif clic[1] > HEIGHT :
+        # Si le clic est pour lancé le programme
         if clic[0] < (WIDTH//3):
           lecture = 1
+        # Si le clic est pour mettre en pause le programme
         elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
           lecture = 0
+        # Si le clic est pour arréter le programme 
         elif clic[0] > (WIDTH//1.5):
           pygame.quit()
-      time.sleep(TEMPS)
       affiche_jeu_console()
-
+      calcul_voisin()
+      affiche_voisin_console()
+      
+time.sleep(TEMPS)
+calcul_voisin()
+calcul_jeu()
+remplir_case()
+quitter -= 1
   
 wait_escape()
 pygame.quit()
