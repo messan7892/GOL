@@ -12,11 +12,11 @@ from graphics import *
 
 # definition de quelques constantes
 CASE = 20
-L = 10
-H = 5
+L = 15
+H = 10
 WIDTH = L*CASE 
 HEIGHT = H*CASE
-SIZE = [WIDTH, (HEIGHT+3*CASE)]
+SIZE = [(WIDTH+5*CASE), (HEIGHT+3*CASE)]
 
 MORTE = 0
 VIVANTE = 1
@@ -38,7 +38,8 @@ COULEUR_VIDE = noir
 
 jeu = []
 voisin = []
-
+population = 0
+periode = 0
 ############################################################
 #                                                          #
 #            Programme Pour le Quadrillage                 #
@@ -126,6 +127,25 @@ def affiche_voisin_console():
             j +=1
         print("\n")
         i +=1
+        
+def affichage_population_depart():
+    
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana" , 15)
+    afficher = font.render("Population :", 1, blanc)
+    screen.blit(afficher,(WIDTH, CASE//2))  
+    pygame.draw.rect(screen, noir, [WIDTH+1,2*CASE+1,WIDTH+5*CASE,4*CASE])
+    
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana" , 22)
+    afficher = font.render(str(population), 1, blanc)
+    screen.blit(afficher,(WIDTH+2*CASE, 2*CASE))
+    
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana" , 15)
+    afficher = font.render("Période(s) :", 1, blanc)
+    screen.blit(afficher,(WIDTH, 4*CASE))
+    
 ############################################################
 #                                                          #
 #         Calcul de la generation                          #
@@ -196,7 +216,37 @@ def calcul_jeu():
                 jeu[i][j] = 1
             j += 1
         i += 1
-
+        
+def calcul_population_totale():
+    population = 0    
+    i = 0
+    # parcours des lignes
+    while i<H :
+        # parcours des colonnes
+        j = 0
+        while j<L :
+          # Attribution des variables 1 ou 0 en fonction des lois du jeu
+            if jeu[i][j] == 1 :
+                population += 1
+            else:
+                population +=0
+            j += 1
+        i += 1
+    pygame.draw.rect(screen, noir, [WIDTH+1,2*CASE+1,WIDTH+5*CASE,2*CASE])
+    pygame.display.flip()
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana" , 22)
+    afficher = font.render(str(population), 1, blanc)
+    screen.blit(afficher,(WIDTH+2*CASE, 2*CASE))
+    
+def Affichage_periode():
+    
+    pygame.draw.rect(screen, noir, [WIDTH+1,5*CASE+1,WIDTH+5*CASE,7*CASE])
+    pygame.display.flip()
+    pygame.font.init()
+    font = pygame.font.SysFont("verdana" , 22)
+    afficher = font.render(str(periode), 1, blanc)
+    screen.blit(afficher,(WIDTH+2*CASE, 5.5*CASE))
 ############################################################
 #                                                          #
 #         Programme pour la sélection de cellules          #
@@ -261,12 +311,12 @@ def remplir_case_clic(clic):
     if jeu[i][j] == 1:
         centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
         pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
-        pygame.display.flip()
+        
   # Déssiné un rond noir par dessus le rond de couleur pour remettre une cellule à l'état initial en cliquant
     else:
         centre = [((clic[0]//CASE)*CASE+CASE//2),((clic[1]//CASE)*CASE+CASE//2)]
         pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
-        pygame.display.flip()
+        
         
 def remplir_case():
     #parcours des lignes
@@ -279,12 +329,12 @@ def remplir_case():
             if jeu[i][j] == VIVANTE:
                 centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                 pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
-                pygame.display.flip()
+                
           # Et inversement
             else:
                 centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                 pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
-                pygame.display.flip()
+                
             j += 1
         i += 1    
         
@@ -304,14 +354,14 @@ pygame.display.flip()
 #Dessin du Quadrillage
 dessine_quadrillage(COULEUR_0)
 affiche_menu_case()
-
+affichage_population_depart()
 #initialisation des case dans des tableaux
 init_jeu()
 affiche_jeu_console()
 init_voisin()
 affiche_voisin_console()
-
 #Boucle principale
+
 quitter = 10
 lecture = 0
 while quitter != 0:
@@ -325,35 +375,44 @@ while quitter != 0:
                     i = clic[1]//CASE
                     jeu[i][j] = VIVANTE
                     remplir_case_clic(clic)
+                    population += 1
+                    affichage_population_depart()
+                    pygame.display.flip()
                 #Si la case cliqué est rempli/vivante
                 elif est_vide(clic) == VIVANTE :
                     j = clic[0]//CASE
                     i = clic[1]//CASE
                     jeu[i][j] = MORTE
                     remplir_case_clic(clic)
+                    population -= 1
+                    affichage_population_depart()
+                    pygame.display.flip()
                 # Si le clic intervient en dehors du jeu, soit sur le menu
             elif clic[1] > HEIGHT :
                 # Si le clic est pour lancé le programme
                 if clic[0] < (WIDTH//3):
                    lecture = 1
-                
-                """# Si le clic est pour mettre en pause le programme
+                # Si le clic est pour mettre en pause le programme
                 elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
                    lecture = 0
                 # Si le clic est pour arréter le programme 
                 elif clic[0] > (WIDTH//1.5):
-                   pygame.quit()"""
+                   pygame.quit()
                 """affiche_jeu_console()
                 calcul_voisin()
-                affiche_voisin_console()"""     
+                affiche_voisin_console()"""
+    periode += 1        
     time.sleep(TEMPS)
     print("***")
     affiche_jeu_console()
     calcul_voisin()
     affiche_voisin_console()
     calcul_jeu()
+    calcul_population_totale()
+    Affichage_periode()
     affiche_jeu_console()
     remplir_case()
+    pygame.display.flip()
     quitter -= 1
   
 wait_escape()
