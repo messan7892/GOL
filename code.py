@@ -12,8 +12,8 @@ from graphics import *
 
 # definition de quelques constantes
 CASE = 20
-L = 22
-H = 16
+L = 10
+H = 5
 WIDTH = L*CASE 
 HEIGHT = H*CASE
 SIZE = [WIDTH, (HEIGHT+3*CASE)]
@@ -152,7 +152,7 @@ def calcul_voisin():
     
 
             #coin bas gauche
-            elif i == H-1 and j== 0 :
+            elif i == H-1 and j == 0 :
                 voisin_case = jeu[H-2][0] + jeu[H-2][1] + jeu[H-1][1]
 
  
@@ -165,7 +165,7 @@ def calcul_voisin():
                 voisin_case = jeu[0][j-1] + jeu[0][j+1] + jeu[1][j-1] + jeu[1][j] + jeu[1][j+1]
             # bord bas
             elif i == H-1:
-                voisin_case = jeu[H-2][j-1] + jeu[H-2][j] + jeu[H-2][j] + jeu[H-1][j-1] + jeu[H-1][j+1]
+                voisin_case = jeu[H-2][j-1] + jeu[H-2][j] + jeu[H-2][j+1] + jeu[H-1][j-1] + jeu[H-1][j+1]
 
             #bord gauche
             elif j == 0:
@@ -277,12 +277,12 @@ def remplir_case():
         while j<L :
           # Mettre à jour les cases avec des ronds de couleurs pour les cellules vivantes
             if jeu[i][j] == VIVANTE:
-                centre = [((j*CASE)-(CASE//2)),((i*CASE)-(CASE//2))]
+                centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                 pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
                 pygame.display.flip()
           # Et inversement
             else:
-                centre = [((j*CASE)-(CASE//2)),((i*CASE)-(CASE//2))]
+                centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                 pygame.draw.circle(screen, COULEUR_VIDE, centre, CASE//2-1)
                 pygame.display.flip()
             j += 1
@@ -314,45 +314,46 @@ affiche_voisin_console()
 #Boucle principale
 quitter = 10
 lecture = 0
-   while quitter != 0:
-      if lecture == 0:
-       while lecture == 0:
-          '''attente d un clic'''
-          clic = wait_clic()
-         '''Verification de la case'''
-         #Si la case cliqué est vide
-         if clic[1] < HEIGHT :
-            if est_vide(clic) == MORTE:
-               j = clic[0]//CASE
-               i = clic[1]//CASE
-               jeu[i][j] = VIVANTE
-               remplir_case_clic(clic)
-            #Si la case cliqué est rempli/vivante
-            elif est_vide(clic) == VIVANTE :
-               j = clic[0]//CASE
-               i = clic[1]//CASE
-               jeu[i][j] = MORTE
-               remplir_case_clic(clic)
-            # Si le clic intervient en dehors du jeu, soit sur le menu
+while quitter != 0:
+    if lecture == 0:
+        while lecture == 0:
+            clic = wait_clic()
+            #Si la case cliqué est vide
+            if clic[1] < HEIGHT :
+                if est_vide(clic) == MORTE:
+                    j = clic[0]//CASE
+                    i = clic[1]//CASE
+                    jeu[i][j] = VIVANTE
+                    remplir_case_clic(clic)
+                #Si la case cliqué est rempli/vivante
+                elif est_vide(clic) == VIVANTE :
+                    j = clic[0]//CASE
+                    i = clic[1]//CASE
+                    jeu[i][j] = MORTE
+                    remplir_case_clic(clic)
+                # Si le clic intervient en dehors du jeu, soit sur le menu
             elif clic[1] > HEIGHT :
-            # Si le clic est pour lancé le programme
-            if clic[0] < (WIDTH//3):
-               lecture = 1
-            # Si le clic est pour mettre en pause le programme
-            elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
-               lecture = 0
-            # Si le clic est pour arréter le programme 
-            elif clic[0] > (WIDTH//1.5):
-               pygame.quit()
-            affiche_jeu_console()
-            calcul_voisin()
-            affiche_voisin_console()
-      
-   time.sleep(TEMPS)
-   calcul_voisin()
-   calcul_jeu()
-   remplir_case()
-   quitter -= 1
+                # Si le clic est pour lancé le programme
+                if clic[0] < (WIDTH//3):
+                   lecture = 1
+                # Si le clic est pour mettre en pause le programme
+                elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
+                   lecture = 0
+                # Si le clic est pour arréter le programme 
+                elif clic[0] > (WIDTH//1.5):
+                   pygame.quit()
+                """affiche_jeu_console()
+                calcul_voisin()
+                affiche_voisin_console()"""     
+    time.sleep(TEMPS)
+    print("***")
+    affiche_jeu_console()
+    calcul_voisin()
+    affiche_voisin_console()
+    calcul_jeu()
+    affiche_jeu_console()
+    remplir_case()
+    quitter -= 1
   
 wait_escape()
 pygame.quit()
