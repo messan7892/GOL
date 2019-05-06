@@ -336,12 +336,13 @@ while quitter != 0:
                 # Si le clic est pour lancé le programme
                 if clic[0] < (WIDTH//3):
                    lecture = 1
-                # Si le clic est pour mettre en pause le programme
+                
+                """# Si le clic est pour mettre en pause le programme
                 elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
                    lecture = 0
                 # Si le clic est pour arréter le programme 
                 elif clic[0] > (WIDTH//1.5):
-                   pygame.quit()
+                   pygame.quit()"""
                 """affiche_jeu_console()
                 calcul_voisin()
                 affiche_voisin_console()"""     
