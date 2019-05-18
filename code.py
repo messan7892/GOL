@@ -1,4 +1,3 @@
-
    # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
@@ -13,8 +12,8 @@ from graphics import *
 
 # definition de quelques constantes
 CASE = 20
-L = 15
-H = 10
+L = 30
+H = 30
 WIDTH = L*CASE 
 HEIGHT = H*CASE
 SIZE = [(WIDTH+5*CASE), (HEIGHT+3*CASE)]
@@ -255,7 +254,7 @@ def Affichage_periode():
 ############################################################    
 
 def est_vide(clic):
-  # Vérification de l'état de la cellule cliquée
+  # Vérification de l'état de la cellule clické
     case_clic =[clic[0]//CASE,clic[1]//CASE]
     if jeu[case_clic[1]][case_clic[0]] == 0 :
         return MORTE
@@ -362,9 +361,8 @@ affiche_jeu_console()
 init_voisin()
 affiche_voisin_console()
 #Boucle principale
-
-lecture = 0
 quitter = 1
+lecture = 0
 while quitter != 0:
     if lecture == 0:
         while lecture == 0:
@@ -391,17 +389,15 @@ while quitter != 0:
                 # Si le clic intervient en dehors du jeu, soit sur le menu
             elif clic[1] > HEIGHT :
                 # Si le clic est pour lancé le programme
-                if clic[0] < (WIDTH//3):
-                   lecture = 1
+                    if clic[0] < (WIDTH//3):
+                        lecture = 1
                 # Si le clic est pour mettre en pause le programme
-                elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
-                   lecture = 0
+                    elif clic[0] > (WIDTH//3) and clic[0] < (WIDTH//1.5):
+                        lecture = 0
                 # Si le clic est pour arréter le programme 
-                elif clic[0] > (WIDTH//1.5):
-                   pygame.quit()
-                """affiche_jeu_console()
-                calcul_voisin()
-                affiche_voisin_console()"""
+                    elif clic[0] > (WIDTH//1.5):
+                        pygame.quit()
+    #Fonctions pour touts les Affichages et Calculs des cellules                    
     periode += 1        
     time.sleep(TEMPS)
     print("***")
@@ -414,13 +410,18 @@ while quitter != 0:
     affiche_jeu_console()
     remplir_case()
     pygame.display.flip()
+    
+    #Fonction qui regarde l'action de l'uttilisateur quand le programme est en cours
     for event in pygame.event.get():
         
-        if event.type == pygame.KEYDOWN:
-            event.key == pygame.K_SPACE
-            lecture = 1
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            #Pour le clic de l'utilisateur sur le Bouton Pause
+            if event.button == 1 and event.pos[0] > WIDTH//3 and event.pos[0] < WIDTH//1.5 and event.pos[1] > HEIGHT:
+                lecture = 0
+            #Pour le clic de l'utilisateur sur le Bouton Stop
+            elif event.button == 1 and event.pos[0] > WIDTH//1.5 and event.pos[0] < WIDTH and event.pos[1] > HEIGHT:
+                pygame.quit()
         else:
-            print("Clic non actifs")
-  
+            print("")
 wait_escape()
 pygame.quit()
