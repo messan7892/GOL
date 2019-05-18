@@ -362,7 +362,6 @@ init_voisin()
 affiche_voisin_console()
 #Boucle principale
 
-quitter = 10
 lecture = 0
 while quitter != 0:
     if lecture == 0:
@@ -413,7 +412,12 @@ while quitter != 0:
     affiche_jeu_console()
     remplir_case()
     pygame.display.flip()
-    quitter -= 1
+    for event in pygame.event.get():
+        
+        if event.type == KEYDOWN:
+            lecture = 1
+        else:
+            print("Clic non actifs")
   
 wait_escape()
 pygame.quit()
