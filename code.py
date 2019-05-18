@@ -1,3 +1,4 @@
+
    # -*- coding: utf-8 -*-
 
 # importation du module graphique 2D pygame
@@ -254,7 +255,7 @@ def Affichage_periode():
 ############################################################    
 
 def est_vide(clic):
-  # Vérification de l'état de la cellule clické
+  # Vérification de l'état de la cellule cliquée
     case_clic =[clic[0]//CASE,clic[1]//CASE]
     if jeu[case_clic[1]][case_clic[0]] == 0 :
         return MORTE
@@ -363,6 +364,7 @@ affiche_voisin_console()
 #Boucle principale
 
 lecture = 0
+quitter = 1
 while quitter != 0:
     if lecture == 0:
         while lecture == 0:
@@ -414,7 +416,8 @@ while quitter != 0:
     pygame.display.flip()
     for event in pygame.event.get():
         
-        if event.type == KEYDOWN:
+        if event.type == pygame.KEYDOWN:
+            event.key == pygame.K_SPACE
             lecture = 1
         else:
             print("Clic non actifs")
