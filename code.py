@@ -321,15 +321,20 @@ def remplir_case_clic(clic):
 def remplir_case():
     #parcours des lignes
     i = 0    
+    calcul_voisin() #recalcul des voisins afin de colorer les cases de differentes couleurs
     while i<H :
         # parcours des colonnes
         j = 0
         while j<L :
           # Mettre à jour les cases avec des ronds de couleurs pour les cellules vivantes
             if jeu[i][j] == VIVANTE:
-                centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
-                pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
-                
+                #Colorer les cases en fonction de leur etat: rouge = mourrante
+                if voisin[i][j] >= 4 or voisin[i][j] <= 1:
+                    centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
+                    pygame.draw.circle(screen, COULEUR_1, centre, CASE//2-1)
+                else :
+                    centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
+                    pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
           # Et inversement
             else:
                 centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
