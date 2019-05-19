@@ -20,7 +20,7 @@ SIZE = [(WIDTH+5*CASE), (HEIGHT+3*CASE)]
 
 MORTE = 0
 VIVANTE = 1
-TEMPS=0.5 										#Temps attente entre 2 rafraichissements en secondes
+TEMPS=1 										#Temps attente entre 2 rafraichissements en secondes
 
 COULEUR_0 = gris
 COULEUR_1 = rouge
@@ -320,8 +320,11 @@ def remplir_case_clic(clic):
         
 def remplir_case():
     #parcours des lignes
-    i = 0    
-    calcul_voisin() #recalcul des voisins afin de colorer les cases de differentes couleurs
+    i = 0
+    """voisin_p_moins_1=voisin
+    jeu_p_moins_1=jeu"""
+    
+    calcul_voisin()#recalcul des voisins afin de colorer les cases de differentes couleurs
     while i<H :
         # parcours des colonnes
         j = 0
@@ -332,6 +335,11 @@ def remplir_case():
                 if voisin[i][j] >= 4 or voisin[i][j] <= 1:
                     centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                     pygame.draw.circle(screen, COULEUR_1, centre, CASE//2-1)
+                
+                  #elif voisin_p_moins_1[i][j] == 3 and jeu_p_moins_1[i][j] == 0:
+                    """centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
+                    pygame.draw.circle(screen, COULEUR_3, centre, CASE//2-1)""" 
+                
                 else :
                     centre = [((j*CASE)+(CASE//2)),((i*CASE)+(CASE//2))]
                     pygame.draw.circle(screen, COULEUR_6, centre, CASE//2-1)
